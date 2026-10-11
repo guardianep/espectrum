@@ -14,13 +14,29 @@
 
 ## Contents
 
-1. [2026-10-10 – Work session](#2026-10-10-work-session)
+1. [2026-10-10 – After grinding through hours of KiCad errors and debugging, I finally finished the PCB layout for Spectre. Second time ever touching KiCad on a serious project, so there were definitely learning curve](#2026-10-10-after-grinding-through-hours-of-kicad-errors-and-)
 
 ## Design
 
-### 2026-10-10 – Work session
+### 2026-10-10 – After grinding through hours of KiCad errors and debugging, I finally finished the PCB layout for Spectre. Second time ever touching KiCad on a serious project, so there were definitely learning curve
 
 **5h**
+
+After grinding through hours of KiCad errors and debugging, I finally finished the PCB layout for Spectre. Second time ever touching KiCad on a serious project, so there were definitely learning curves.
+
+The toughest part was integrating the 100µF decoupling capacitor for LED power supply. Took me a minute to understand that it needed to sit in parallel between the 5V and ground rails, not in series. Once I got that conceptually right, the placement made sense. Also had to chase down some net labeling issues where 5V and 3.3V were accidentally merging into the same rail (bad mistake that would’ve fried the board).
+
+![image](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/HYoeNkwLyIaTh2IQCmuDUrPBtIlk9XNc/ac214dc532553e49822d677e02f574081d60fdd646ee857aa562cf3c1df5a73e.png)
+
+The 3D rendering looks clean. 30 SK6812 addressable LEDs spread across 3 rows, each with its own data line protected by a 360Ω resistor. Three analog sliders for volume control on IO3/IO4/IO5. OLED display for visual feedback on I2C. Power distribution is solid now with proper 5V/3.3V separation.
+
+![image](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/HYoeNkwLyIaTh2IQCmuDUrPBtIlk9XNc/e797c02c759f796e51eb5a79128e5d64120a818513a386fc6cbc2d5dc92db42b.png)
+
+Next step is component cost optimization. The current bill of materials has some parts prone to price swings on AliExpress. Want to find cheaper alternatives or bulk options before ordering.
+
+Firmware comes later. Right now it’s just the hardware blueprint. Once I have the PCB in hand and tested, that’s when the real programming starts.
+
+Thinking about 3D printing a case for it down the road, but might not have time this week. We’ll see.
 
 [Timelapse](https://lookout.hackclub.com/api/media/68ddfa6a-fb66-4b42-9bfa-cdcb75200009/video.mp4)
 
