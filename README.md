@@ -17,7 +17,7 @@ KiCad files available in `hardware/kicad/`:
 - Schematic: `Spectre.kicad_sch`
 - PCB Layout: `Spectre.kicad_pcb`
 
-![Spectre PCB final rendering](hardware/Spectre.png)
+![Spectre PCB final rendering](Hardware\Spectre.png)
 
 **Microcontroller:**
 - ESP32-C3-DevKitM-1
@@ -84,7 +84,3 @@ python spectre_controller.py
 - Firmware: Complete (Steps 1-4 done)
 - Desktop Controller: BETA (app selection refinement in progress)
 - Hardware: PCB designed, awaiting fabrication
-
-## License
-
-MIT
