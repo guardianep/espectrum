@@ -17,7 +17,7 @@ KiCad files available in `hardware/kicad/`:
 - Schematic: `Spectre.kicad_sch`
 - PCB Layout: `Spectre.kicad_pcb`
 
-![Spectre PCB final rendering](Hardware\Spectre.png)
+![Spectre PCB final rendering](Spectre.png)
 
 **Microcontroller:**
 - ESP32-C3-DevKitM-1
