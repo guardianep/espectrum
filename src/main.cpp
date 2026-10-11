@@ -2,29 +2,31 @@
 #include <adafruit_NeoPixel.h>
 #include <adafruit_ssd1306.h>
 #include <Wire.h>
-//LED setup
-#define LED_pin_row1 0
-#define LED_pin_row2 1
-#define LED_pin_row3 2
-#define LEDS_Per_row 10
+
+#define LED_PIN_ROW1 0
+#define LED_PIN_ROW2 1
+#define LED_PIN_ROW3 2
+#define LEDS_PER_ROW 10
 #define LED_TYPE NEO_GRB
 
-//Slider setup
-#define Slider_1 3
-#define Slider_2 4
-#define Slider_3 5
+#define SLIDER_1 3
+#define SLIDER_2 4
+#define SLIDER_3 5
 
-//OLED config
 #define OLED_WIDTH 128
 #define OLED_HEIGHT 64
-#define Oled_ADDR 0x03c
+#define OLED_ADDR 0x3C
 
-// LED Strips for each row that exists
-Adafruit_NeoPixel ledRow1(LEDS_Per_row, LED_pin_row1, LED_TYPE + NEO_KHZ800);
-Adafruit_NeoPixel ledRow2(LEDS_Per_row, LED_pin_row2, LED_TYPE + NEO_KHZ800);
-Adafruit_NeoPixel ledRow3(LEDS_Per_row, LED_pin_row3, LED_TYPE + NEO_KHZ800);
+struct Config {
+  String slider1App;
+  String slider2App;
+  String slider3App;
+} config = {"Chrome", "Spotify", "Discord"};
 
-// OLED display
+Adafruit_NeoPixel ledRow1(LEDS_PER_ROW, LED_PIN_ROW1, LED_TYPE + NEO_KHZ800);
+Adafruit_NeoPixel ledRow2(LEDS_PER_ROW, LED_PIN_ROW2, LED_TYPE + NEO_KHZ800);
+Adafruit_NeoPixel ledRow3(LEDS_PER_ROW, LED_PIN_ROW3, LED_TYPE + NEO_KHZ800);
+
 Adafruit_SSD1306 display(OLED_WIDTH, OLED_HEIGHT, &Wire, -1);
 
 void SetRowLEDCount(int row, int count, uint32_t color);
@@ -35,40 +37,41 @@ uint32_t makeColor(uint8_t r, uint8_t g, uint8_t b);
 int readSlider1();
 int readSlider2();
 int readSlider3();
-
+void parseSerialConfig(String data);
+void handleSerialData();
+void displayConfig();
 
 void SetRowLEDCount(int row, int count, uint32_t color) {
   if (count < 0) count = 0;
-  if (count > LEDS_Per_row) count = LEDS_Per_row;
+  if (count > LEDS_PER_ROW) count = LEDS_PER_ROW;
 
   if (row == 1) {
-    for (int i=0; i < LEDS_Per_row; i++) {
+    for (int i=0; i < LEDS_PER_ROW; i++) {
       if (i < count) {
         ledRow1.setPixelColor(i, color);
       } else {
-        ledRow1.setPixelColor(i, 0); // Turn off the remaining LEDs
+        ledRow1.setPixelColor(i, 0);
       }
     }
   }
   else if (row == 2) {
-    for (int i=0; i < LEDS_Per_row; i++) {
+    for (int i=0; i < LEDS_PER_ROW; i++) {
       if (i < count) {
         ledRow2.setPixelColor(i, color);
       } else {
-        ledRow2.setPixelColor(i, 0); // Turn off the remaining LEDs
+        ledRow2.setPixelColor(i, 0);
       }
     }
   }
   else if (row == 3) {
-    for (int i=0; i < LEDS_Per_row; i++) {
+    for (int i=0; i < LEDS_PER_ROW; i++) {
       if (i < count) {
         ledRow3.setPixelColor(i, color);
       } else {
-        ledRow3.setPixelColor(i, 0); // Turn off the remaining LEDs
+        ledRow3.setPixelColor(i, 0);
       }
     }
   }
-  
 }
 
 void setup() {
@@ -90,10 +93,9 @@ void setup() {
   ledRow2.show();
   ledRow3.show();
 
-  if (!display.begin(SSD1306_SWITCHCAPVCC, Oled_ADDR)) {
+  if (!display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR)) {
     Serial.println(F("SSD1306 allocation failed"));
     while (1);
-      ; // Don't proceed, loop forever
   }
 
   display.clearDisplay();
@@ -102,62 +104,52 @@ void setup() {
   display.setCursor(0,0);
   display.println("spectre ready!");
   display.display();
-  pinMode(Slider_1, INPUT);
-  pinMode(Slider_2, INPUT);
-  pinMode(Slider_3, INPUT);
+  pinMode(SLIDER_1, INPUT);
+  pinMode(SLIDER_2, INPUT);
+  pinMode(SLIDER_3, INPUT);
+
+  delay(2000);
   Serial.println("Setup Complete");
-  
 }
 
 void loop() {
+  handleSerialData();
 
   int slider1 = readSlider1();
   int slider2 = readSlider2();
   int slider3 = readSlider3();
-  //maps the slider values to the brighness, a littel test but close enough to waht i really want
-  int ledCount1 = map(slider1, 0, 4095, 0, LEDS_Per_row ); // Adjust the mapping range as needed
-  int ledCount2 = map(slider2,0, 4095, 0, LEDS_Per_row);// Adjust the mapping range as needed
-  int ledCount3 = map(slider3,0, 4095, 0, LEDS_Per_row);// Adjust the mapping range as needed
 
-  SetRowLEDCount(1, ledCount1, makeColor(255,0,0));
-  SetRowLEDCount(2, ledCount2, makeColor(0,255,0));
-  SetRowLEDCount(3, ledCount3, makeColor(0,0,255));
+  int ledCount1 = map(slider1, 0, 4095, 0, LEDS_PER_ROW);
+  int ledCount2 = map(slider2, 0, 4095, 0, LEDS_PER_ROW);
+  int ledCount3 = map(slider3, 0, 4095, 0, LEDS_PER_ROW);
+
+  SetRowLEDCount(1, ledCount1, makeColor(255, 0, 0));
+  SetRowLEDCount(2, ledCount2, makeColor(0, 255, 0));
+  SetRowLEDCount(3, ledCount3, makeColor(0, 0, 255));
   updateAllLEDS();
 
-
-  //display on the OLED screen the values of the sliders
-  display.clearDisplay();
-  display.setTextSize(1);
-  display.setTextColor(SSD1306_WHITE);
-  display.setCursor(0,0);
-  display.println("Audio Mixer:");
-  display.println("slider 1: " + String(slider1));
-  display.println("slider 2: " + String(slider2));
-  display.println("slider 3: " + String(slider3));
-  display.display();
+  displayConfig();
 
   delay(200);
 }
 
 void setRowColor(int row, uint32_t color) {
   if (row == 1 ) {
-    for (int i=0; i< LEDS_Per_row; i++) {
+    for (int i=0; i< LEDS_PER_ROW; i++) {
       ledRow1.setPixelColor(i, color);
     }
   }
- else if (row ==2 ){
-   for (int i=0; i< LEDS_Per_row; i++) {
+  else if (row ==2 ){
+    for (int i=0; i< LEDS_PER_ROW; i++) {
       ledRow2.setPixelColor(i, color);
-   }
- }
- else if (row ==3 ) {
-    for (int i=0; i<LEDS_Per_row; i++) {
+    }
+  }
+  else if (row ==3 ) {
+    for (int i=0; i<LEDS_PER_ROW; i++) {
       ledRow3.setPixelColor(i, color);
     }
- }
+  }
 }
-
-
 
 void SetRowBrightness(int row, uint8_t brightness) {
   if (row == 1) {
@@ -171,23 +163,82 @@ void SetRowBrightness(int row, uint8_t brightness) {
   }
 }
 
-
 void updateAllLEDS() {
   ledRow1.show();
   ledRow2.show();
   ledRow3.show();
 }
+
 uint32_t makeColor(uint8_t r, uint8_t g, uint8_t b){
   return ((uint32_t)r <<16) | ((uint32_t)g << 8) | b;
 }
 
 int readSlider1() {
-  return analogRead(Slider_1);
+  return analogRead(SLIDER_1);
 }
-int readSlider2() {
-  return analogRead(Slider_2);
-}
-int readSlider3() {
-  return analogRead(Slider_3);
 
+int readSlider2() {
+  return analogRead(SLIDER_2);
+}
+
+int readSlider3() {
+  return analogRead(SLIDER_3);
+}
+
+void parseSerialConfig(String data) {
+  data.trim();
+
+  int pos1 = data.indexOf("S1:");
+  int pos2 = data.indexOf("|S2:");
+  int pos3 = data.indexOf("|S3:");
+  int posEnd = data.length();
+
+  if (pos1 != -1 && pos2 != -1 && pos3 != -1) {
+    config.slider1App = data.substring(pos1 + 3, pos2);
+    config.slider2App = data.substring(pos2 + 4, pos3);
+    config.slider3App = data.substring(pos3 + 4, posEnd);
+
+    Serial.print("Config updated: S1=");
+    Serial.print(config.slider1App);
+    Serial.print(" S2=");
+    Serial.print(config.slider2App);
+    Serial.print(" S3=");
+    Serial.println(config.slider3App);
+  }
+}
+
+void handleSerialData() {
+  static String serialBuffer = "";
+
+  while (Serial.available()) {
+    char c = Serial.read();
+
+    if (c == '\n') {
+      if (serialBuffer.length() > 0) {
+        parseSerialConfig(serialBuffer);
+        serialBuffer = "";
+      }
+    } else if (c != '\r') {
+      serialBuffer += c;
+    }
+  }
+}
+
+void displayConfig() {
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0, 0);
+
+  display.println("=== SPECTRE MIXER ===");
+  display.println();
+
+  display.print("S1: ");
+  display.println(config.slider1App);
+  display.print("S2: ");
+  display.println(config.slider2App);
+  display.print("S3: ");
+  display.println(config.slider3App);
+
+  display.display();
 }
