@@ -31,7 +31,9 @@ void setRowColor(int row, uint32_t color);
 void setRowBrightness(int row, uint8_t brightness);
 void updateAllLEDS();
 uint32_t makeColor(uint8_t r, uint8_t g, uint8_t b);
-
+int readSlider1();
+int readSLider2();
+int readSlider3();
 
 void setup() {
   Serial.begin(115200);
@@ -72,6 +74,24 @@ void setup() {
 }
 
 void loop() {
+  int slider1 = readSlider1();
+  int slider2 = readSLider2();
+  int slider3 = readSlider3();
+
+
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0,0);
+  display.println("slider 1: " + String(slider1));
+  display.println("slider 2: " + String(slider2));
+  display.println("slider 3: " + String(slider3));
+  display.display();
+
+  delay(200);
+
+
+
   setRowColor(1, makeColor(255,0,0));
   setRowColor(2, makeColor(0,255,0));
   setRowColor(3, makeColor(0,0,255));
@@ -126,4 +146,15 @@ void updateAllLEDS() {
 }
 uint32_t makeColor(uint8_t r, uint8_t g, uint8_t b){
   return ((uint32_t)r <<16) | ((uint32_t)g << 8) | b;
+}
+
+int readSlider1() {
+  return analogRead(Slider_1);
+}
+int readSLider2() {
+  return analogRead(Slider_2);
+}
+int readSlider3() {
+  return analogRead(Slider_3);
+
 }
