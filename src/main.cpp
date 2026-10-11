@@ -27,6 +27,11 @@ Adafruit_NeoPixel ledRow3(LEDS_Per_row, LED_pin_row3, LED_TYPE + NEO_KHZ800);
 // OLED display
 Adafruit_SSD1306 display(OLED_WIDTH, OLED_HEIGHT, &Wire, -1);
 
+void setRowColor(int row, uint32_t color);
+void setRowBrightness(int row, uint8_t brightness);
+void updateAllLEDS();
+uint32_t makeColor(uint8_t r, uint8_t g, uint8_t b);
+
 
 void setup() {
   Serial.begin(115200);
@@ -67,6 +72,58 @@ void setup() {
 }
 
 void loop() {
-  delay(20);
+  setRowColor(1, makeColor(255,0,0));
+  setRowColor(2, makeColor(0,255,0));
+  setRowColor(3, makeColor(0,0,255));
 
+
+  delay(1000);
+
+  setRowColor(1, makeColor(0,0,0));
+  setRowColor(2, makeColor(0,0,0));
+  setRowColor(3, makeColor(0,0,0));
+
+  delay(1000);
+}
+
+void setRowColor(int row, uint32_t color) {
+  if (row == 1 ) {
+    for (int i=0; i< LEDS_Per_row; i++) {
+      ledRow1.setPixelColor(i, color);
+    }
+  }
+ else if (row ==2 ){
+   for (int i=0; i< LEDS_Per_row; i++) {
+      ledRow2.setPixelColor(i, color);
+   }
+ }
+ else if (row ==3 ) {
+    for (int i=0; i<LEDS_Per_row; i++) {
+      ledRow3.setPixelColor(i, color);
+    }
+ }
+}
+
+
+
+void SetRowBrightness(int row, uint8_t brightness) {
+  if (row == 1) {
+    ledRow1.setBrightness(brightness);
+  }
+  else if (row == 2 ) {
+    ledRow2.setBrightness(brightness);
+  }
+  else if (row == 3) {
+    ledRow3.setBrightness(brightness);
+  }
+}
+
+
+void updateAllLEDS() {
+  ledRow1.show();
+  ledRow2.show();
+  ledRow3.show();
+}
+uint32_t makeColor(uint8_t r, uint8_t g, uint8_t b){
+  return ((uint32_t)r <<16) | ((uint32_t)g << 8) | b;
 }
