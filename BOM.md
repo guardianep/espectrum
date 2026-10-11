@@ -18,7 +18,7 @@
 | [0.91 inch OLED module](https://www.aliexpress.us/item/3256807013199079.html?spm=a2g0o.detail.0.0.28da3d91orWXh0&mp=1&pdp_npi=6%40dis%21USD%21USD+4.16%21USD+1.09%21%21USD+1.09%21%21%21%402103128917916821899808402e0d3d%2112000046316668326%21ct%21US%218278671542%21%211%210%21&_gl=1*40tx9v*_gcl_au*MTkzNDQ4MTA0Mi4xNzg5MjYzNjg1*_ga*MTAyMzY5MDM3MC4xNzkxNjc4OTIy*_ga_VED1YSGNC7*czE3OTE2ODIwMTMkbzIkZzEkdDE3OTE2ODIzODckajYkbDAkaDA.&gatewayAdapt=glo2usa) | used for displaying info like app volume, which app goes with which slider, or which app's volume was chnaged | 1 | $1.09 | $1.09 | [Good Luck Electronic Productions](https://www.aliexpress.us/item/3256807013199079.html?spm=a2g0o.detail.0.0.28da3d91orWXh0&mp=1&pdp_npi=6%40dis%21USD%21USD+4.16%21USD+1.09%21%21USD+1.09%21%21%21%402103128917916821899808402e0d3d%2112000046316668326%21ct%21US%218278671542%21%211%210%21&_gl=1*40tx9v*_gcl_au*MTkzNDQ4MTA0Mi4xNzg5MjYzNjg1*_ga*MTAyMzY5MDM3MC4xNzkxNjc4OTIy*_ga_VED1YSGNC7*czE3OTE2ODIwMTMkbzIkZzEkdDE3OTE2ODIzODckajYkbDAkaDA.&gatewayAdapt=glo2usa) |
 | [PCB](https://cart.jlcpcb.com/quote/gerberviewThree/?qs=1a6e730dceac41cda79f55dd0be681b7_1_0_1_0_0.html) | IT connectes Everythign together. | 1 | $4.00 | $4.00 | [JLCPCB](https://cart.jlcpcb.com/quote/gerberviewThree/?qs=1a6e730dceac41cda79f55dd0be681b7_1_0_1_0_0.html) |
 | **Parts subtotal** | — | — | — | **$33.03** | — |
-| **Tax & shipping** | — | — | — | **$32.00** | — |
-| **Total** | — | — | — | **$65.03** | — |
+| **Tax & shipping** | — | — | — | **$25.00** | — |
+| **Total** | — | — | — | **$58.03** | — |
 
-**$0.03 over the tier's funding.** Every tier gives a fixed amount for parts, so this needs cutting back or a higher tier.
+$6.97 left of the tier's funding.
